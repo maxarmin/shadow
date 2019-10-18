@@ -8,7 +8,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Shadow Settings</string>
+			<string>SHADOW_SETTINGS_GROUP</string>
+			<key>footerText</key>
+			<string>SHADOW_SETTINGS_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -20,7 +22,7 @@
 			<key>key</key>
 			<string>enabled</string>
 			<key>label</key>
-			<string>Enable Shadow</string>
+			<string>TOGGLE_ENABLE_SHADOW</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -32,24 +34,26 @@
 			<key>key</key>
 			<string>exclude_system_apps</string>
 			<key>label</key>
-			<string>Disable Shadow for Safe Apps</string>
+			<string>TOGGLE_SAFE_APPS</string>
 		</dict>
 
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>footerAlignment</key>
-			<integer>1</integer>
 			<key>footerText</key>
-			<string>Shadow version 2.0 by jjolano</string>
+			<string>BYPASS_DETECTION_LIB_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>respring:</string>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>me.jjolano.shadow</string>
+			<key>key</key>
+			<string>bypass_checks</string>
 			<key>label</key>
-			<string>Restart SpringBoard</string>
+			<string>TOGGLE_DETECTION_LIB</string>
 		</dict>
 
 		<!-- Application List -->
@@ -57,9 +61,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Application Settings</string>
+			<string>APP_SETTINGS_GROUP</string>
 			<key>footerText</key>
-			<string>Blacklist mode enables Shadow for all except selected apps. Whitelist mode enables Shadow only for selected apps.</string>
+			<string>APP_SETTINGS_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -69,7 +73,7 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>label</key>
-			<string>Applications</string>
+			<string>APPLICATIONS</string>
 			<key>ALAllowsSelection</key>
 			<string>0</string>
 			<key>ALSettingsKeyPrefix</key>
@@ -77,7 +81,7 @@
 			<key>ALSettingsDefaultValue</key>
 			<string>0</string>
 			<key>ALSettingsPath</key>
-			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.plist</string>
+			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.apps.plist</string>
 			<key>ALSingleEnabledMode</key>
 			<false/>
 			<key>ALSectionDescriptors</key>
@@ -89,8 +93,6 @@
 					<string>29</string>
 					<key>suppress-hidden-apps</key>
 					<string>1</string>
-					<key>title</key>
-					<string>Select apps to blacklist/whitelist</string>
 					<key>predicate</key>
 					<string>isSystemApplication = FALSE</string>
 				</dict>
@@ -102,7 +104,7 @@
 			<key>key</key>
 			<string>mode</string>
 			<key>default</key>
-			<string>blacklist</string>
+			<string>whitelist</string>
 			<key>defaults</key>
 			<string>me.jjolano.shadow</string>
 			<key>validValues</key>
@@ -112,14 +114,48 @@
 			</array>
 			<key>validTitles</key>
 			<array>
-				<string>Blacklist Mode</string>
-				<string>Whitelist Mode</string>
+				<string>BLACKLIST_MODE</string>
+				<string>WHITELIST_MODE</string>
 			</array>
 			<key>shortTitles</key>
 			<array>
-				<string>Blacklist Mode</string>
-				<string>Whitelist Mode</string>
+				<string>BLACKLIST_MODE</string>
+				<string>WHITELIST_MODE</string>
 			</array>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>respring:</string>
+			<key>label</key>
+			<string>RESPRING</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>reset:</string>
+			<key>label</key>
+			<string>RESET</string>
+			<key>isDestructive</key>
+			<true/>
+			<key>confirmation</key>
+			<dict>
+				<key>prompt</key>
+				<string>RESET_DESC</string>
+				<key>title</key>
+				<string>RESET_BTN</string>
+				<key>okTitle</key>
+				<string>RESET_BTN</string>
+				<key>cancelTitle</key>
+				<string>CANCEL_BTN</string>
+			</dict>
 		</dict>
 
 		<!-- File Map -->
@@ -127,9 +163,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>File Map</string>
+			<string>FILE_MAP</string>
 			<key>footerText</key>
-			<string>File map enhances Shadow's ability to perform path checks by scanning all installed packages. The file map will need to be regenerated when any changes to installed packages are made. Live generation will generate the file map upon application launch, which may increase launch times.</string>
+			<string>FILE_MAP_DESC</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -137,17 +173,17 @@
 			<key>action</key>
 			<string>generate_map:</string>
 			<key>label</key>
-			<string>Generate File Map</string>
+			<string>GENERATE_FILE_MAP</string>
 			<key>confirmation</key>
 			<dict>
 				<key>prompt</key>
-				<string>This will read all installed package files. This may take a while, depending on how many packages are installed.</string>
+				<string>GENERATE_FILE_MAP_DESC</string>
 				<key>title</key>
-				<string>Continue</string>
+				<string>CONTINUE_BTN</string>
 				<key>okTitle</key>
-				<string>Continue</string>
+				<string>CONTINUE_BTN</string>
 				<key>cancelTitle</key>
-				<string>Cancel</string>
+				<string>CANCEL_BTN</string>
 			</dict>
 		</dict>
 		<dict>
@@ -160,7 +196,7 @@
 			<key>key</key>
 			<string>auto_file_map_generation_enabled</string>
 			<key>label</key>
-			<string>Live Generation</string>
+			<string>AUTO_GENERATE</string>
 		</dict>
 
 		<!-- Dynamic Libraries -->
@@ -168,9 +204,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Dynamic Libraries</string>
+			<string>DYNAMIC_LIB_GROUP</string>
 			<key>footerText</key>
-			<string>Filtering dynamic libraries helps defeat intermediate levels of jailbreak detection. Advanced filters may trigger detection on some apps, and may also be unstable.</string>
+			<string>DYNAMIC_LIB_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -182,7 +218,7 @@
 			<key>key</key>
 			<string>dyld_hooks_enabled</string>
 			<key>label</key>
-			<string>Enable Filtering</string>
+			<string>TOGGLE_STANDARD_FILTERS</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -194,15 +230,15 @@
 			<key>key</key>
 			<string>dyld_filter_enabled</string>
 			<key>label</key>
-			<string>Enable Advanced Filters</string>
+			<string>TOGGLE_ADVANCED_FILTERS</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Dynamic Linker</string>
+			<string>DYNAMIC_LINKER_GROUP</string>
 			<key>footerText</key>
-			<string>Advanced jailbreak detection bypass. May be unstable in some apps, causing crashes or other issues.</string>
+			<string>DYNAMIC_LINKER_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -212,15 +248,15 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>label</key>
-			<string>Filter Dynamic Linker</string>
+			<string>FILTER_DYNAMIC_LINKER</string>
 			<key>ALAllowsSelection</key>
 			<string>0</string>
 			<key>ALSettingsKeyPrefix</key>
-			<string>dlfcn</string>
+			<string></string>
 			<key>ALSettingsDefaultValue</key>
 			<string>0</string>
 			<key>ALSettingsPath</key>
-			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.plist</string>
+			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.apps.dlfcn.plist</string>
 			<key>ALSingleEnabledMode</key>
 			<false/>
 			<key>ALSectionDescriptors</key>
@@ -232,8 +268,6 @@
 					<string>29</string>
 					<key>suppress-hidden-apps</key>
 					<string>1</string>
-					<key>title</key>
-					<string>Select apps to enable dynamic linker bypass</string>
 					<key>predicate</key>
 					<string>isSystemApplication = FALSE</string>
 				</dict>
@@ -245,9 +279,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Sandbox Integrity</string>
+			<string>SANDBOX_INTEGRITY_GROUP</string>
 			<key>footerText</key>
-			<string>Attempts to restore original sandbox functionality. Only necessary if apps are able to use methods that are otherwise restricted by the sandbox.</string>
+			<string>SANDBOX_INTEGRITY_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -259,7 +293,7 @@
 			<key>key</key>
 			<string>sandbox_hooks_enabled</string>
 			<key>label</key>
-			<string>Restore Sandbox</string>
+			<string>TOGGLE_RESTORE_SANDBOX</string>
 		</dict>
 
 		<!-- Tweak Compatibilty -->
@@ -267,9 +301,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Tweak Compatibility</string>
+			<string>TWEAK_COMPAT_GROUP</string>
 			<key>footerText</key>
-			<string>Compatibility settings will reduce bypass effectiveness. Tweak compatibility mode is enabled by default for all apps. Injection compatibility applies to Substrate. If disabled, Substrate may not load some tweaks properly.</string>
+			<string>TWEAK_COMPAT_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -279,15 +313,15 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>label</key>
-			<string>Tweak Compatibility</string>
+			<string>DISABLE_TWEAK_COMPAT</string>
 			<key>ALAllowsSelection</key>
 			<string>0</string>
 			<key>ALSettingsKeyPrefix</key>
-			<string>tweak_compat</string>
+			<string></string>
 			<key>ALSettingsDefaultValue</key>
 			<string>0</string>
 			<key>ALSettingsPath</key>
-			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.plist</string>
+			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.apps.compat.tweak.plist</string>
 			<key>ALSingleEnabledMode</key>
 			<false/>
 			<key>ALSectionDescriptors</key>
@@ -299,8 +333,6 @@
 					<string>29</string>
 					<key>suppress-hidden-apps</key>
 					<string>1</string>
-					<key>title</key>
-					<string>Select apps to disable tweak compatibility</string>
 					<key>predicate</key>
 					<string>isSystemApplication = FALSE</string>
 				</dict>
@@ -308,38 +340,15 @@
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSLinkCell</string>
-			<key>bundle</key>
-			<string>AppList</string>
-			<key>isController</key>
-			<string>1</string>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>me.jjolano.shadow</string>
+			<key>key</key>
+			<string>extra_compat_enabled</string>
 			<key>label</key>
-			<string>Injection Compatibility</string>
-			<key>ALAllowsSelection</key>
-			<string>0</string>
-			<key>ALSettingsKeyPrefix</key>
-			<string>inject_compat</string>
-			<key>ALSettingsDefaultValue</key>
-			<string>0</string>
-			<key>ALSettingsPath</key>
-			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.plist</string>
-			<key>ALSingleEnabledMode</key>
-			<false/>
-			<key>ALSectionDescriptors</key>
-			<array>
-				<dict>
-					<key>cell-class-name</key>
-					<string>ALSwitchCell</string>
-					<key>icon-size</key>
-					<string>29</string>
-					<key>suppress-hidden-apps</key>
-					<string>1</string>
-					<key>title</key>
-					<string>Select apps to disable injection compatibility</string>
-					<key>predicate</key>
-					<string>isSystemApplication = FALSE</string>
-				</dict>
-			</array>
+			<string>TOGGLE_EXTRA_COMPAT</string>
 		</dict>
 
 		<!-- Lockdown Mode -->
@@ -347,9 +356,9 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Lockdown Mode</string>
+			<string>LOCKDOWN_MODE_GROUP</string>
 			<key>footerText</key>
-			<string>Lockdown mode will bypass all compatibility options and attempt to hide injected libraries. Tweaks are not guaranteed to be loaded. To ensure full coverage, Dynamic Linker filtering will need to be enabled separately (see caveats).</string>
+			<string>LOCKDOWN_MODE_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -359,15 +368,15 @@
 			<key>isController</key>
 			<string>1</string>
 			<key>label</key>
-			<string>Lockdown Mode</string>
+			<string>LOCKDOWN_MODE_GROUP</string>
 			<key>ALAllowsSelection</key>
 			<string>0</string>
 			<key>ALSettingsKeyPrefix</key>
-			<string>lockdown</string>
+			<string></string>
 			<key>ALSettingsDefaultValue</key>
 			<string>0</string>
 			<key>ALSettingsPath</key>
-			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.plist</string>
+			<string>/var/mobile/Library/Preferences/me.jjolano.shadow.apps.lockdown.plist</string>
 			<key>ALSingleEnabledMode</key>
 			<false/>
 			<key>ALSectionDescriptors</key>
@@ -379,12 +388,34 @@
 					<string>29</string>
 					<key>suppress-hidden-apps</key>
 					<string>1</string>
-					<key>title</key>
-					<string>Select apps to enable lockdown mode</string>
 					<key>predicate</key>
 					<string>isSystemApplication = FALSE</string>
 				</dict>
 			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.jjolano.shadow</string>
+			<key>key</key>
+			<string>experimental_enabled</string>
+			<key>label</key>
+			<string>TOGGLE_EXPERIMENTAL</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.jjolano.shadow</string>
+			<key>key</key>
+			<string>standardize_paths</string>
+			<key>label</key>
+			<string>TOGGLE_PATH_RESOLVE</string>
 		</dict>
 
 		<!-- Footer -->
@@ -392,35 +423,57 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Support</string>
+			<string>TECHNICAL_SUPPORT_GROUP</string>
 			<key>footerText</key>
-			<string>Shadow is under active development. If this bypass has worked for you, I would greatly appreciate your support through supportive messages and/or donations. I do read every message, and will consider feature requests.
+			<string>TECHNICAL_SUPPORT_FOOTER_TEXT</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>HBLinkTableCell</string>
+			<key>label</key>
+			<string>DEV_REDDIT</string>
+			<key>url</key>
+			<string>https://www.reddit.com/user/jjolano</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>HBLinkTableCell</string>
+			<key>label</key>
+			<string>SOURCE_CODE</string>
+			<key>url</key>
+			<string>https://github.com/jjolano/shadow</string>
+		</dict>
 
-Thank you for using Shadow!</string>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>DEV_SUPPORT_GROUP</string>
+			<key>footerText</key>
+			<string>DEV_SUPPORT_FOOTER_TEXT</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>support_reddit:</string>
+			<string>PSLinkCell</string>
+			<key>cellClass</key>
+			<string>HBLinkTableCell</string>
 			<key>label</key>
-			<string>Shadow Release Thread</string>
+			<string>DONATE</string>
+			<key>url</key>
+			<string>https://paypal.me/jjolano</string>
 		</dict>
+
 		<dict>
 			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>support_github:</string>
-			<key>label</key>
-			<string>View Source Code</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>support_paypal:</string>
-			<key>label</key>
-			<string>Donate to Developer</string>
+			<string>PSGroupCell</string>
+			<key>footerAlignment</key>
+			<integer>1</integer>
+			<key>footerText</key>
+			<string>FOOTER</string>
 		</dict>
 	</array>
 	<key>title</key>

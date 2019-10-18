@@ -7,23 +7,32 @@
 #define NSLog(...);
 #endif
 
-#define DPKG_INFO_PATH  @"/var/lib/dpkg/info"
-#define PREFS_PATH      @"/var/mobile/Library/Preferences/me.jjolano.shadow.plist"
+#define DPKG_INFO_PATH      @"/var/lib/dpkg/info"
+#define PREFS_TWEAK_ID      @"me.jjolano.shadow"
+#define BLACKLIST_PATH      @"me.jjolano.shadow.blacklist"
+#define APPS_PATH           @"me.jjolano.shadow.apps"
+#define DLFCN_PATH          @"me.jjolano.shadow.apps.dlfcn"
+#define TWEAKCOMPAT_PATH    @"me.jjolano.shadow.apps.compat.tweak"
+#define LOCKDOWN_PATH       @"me.jjolano.shadow.apps.lockdown"
 
 @interface Shadow : NSObject {
     NSMutableDictionary *link_map;
     NSMutableDictionary *path_map;
-
-    BOOL passthrough;
+    NSMutableArray *image_set;
+    NSMutableArray *url_set;
 }
 
 @property (nonatomic, assign) BOOL useTweakCompatibilityMode;
 @property (nonatomic, assign) BOOL useInjectCompatibilityMode;
+@property (nonatomic, assign) BOOL usePathStandardization;
+@property (readonly) BOOL passthrough;
 
-- (NSMutableArray *)generateDyldNameArray;
-- (struct mach_header *)generateDyldHeaderArray;
-- (intptr_t *)generateDyldSlideArray;
+- (NSArray *)generateDyldArray;
+
 + (NSArray *)generateFileMap;
++ (NSArray *)generateSchemeArray;
+
++ (NSError *)generateFileNotFoundError;
 
 - (BOOL)isImageRestricted:(NSString *)name;
 - (BOOL)isPathRestricted:(NSString *)path;
@@ -37,8 +46,10 @@
 
 - (void)addPath:(NSString *)path restricted:(BOOL)restricted;
 - (void)addPath:(NSString *)path restricted:(BOOL)restricted hidden:(BOOL)hidden;
+- (void)addPath:(NSString *)path restricted:(BOOL)restricted hidden:(BOOL)hidden prestricted:(BOOL)prestricted phidden:(BOOL)phidden;
 - (void)addRestrictedPath:(NSString *)path;
 - (void)addPathsFromFileMap:(NSArray *)file_map;
+- (void)addSchemesFromURLSet:(NSArray *)set;
 - (void)addLinkFromPath:(NSString *)from toPath:(NSString *)to;
 - (NSString *)resolveLinkInPath:(NSString *)path;
 

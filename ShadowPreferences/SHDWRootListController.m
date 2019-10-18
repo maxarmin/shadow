@@ -1,7 +1,4 @@
-#include <Foundation/Foundation.h>
-#include <UIKit/UIKit.h>
 #include "SHDWRootListController.h"
-#include "../Includes/Shadow.h"
 
 @implementation SHDWRootListController
 
@@ -13,38 +10,64 @@
     return _specifiers;
 }
 
-- (void)support_reddit:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.reddit.com/r/jailbreak/comments/bp59zs/release_shadow_a_simple_open_source_jailbreak/"]];
-}
-
-- (void)support_github:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/jjolano/shadow"]];
-}
-
-- (void)support_paypal:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://paypal.me/jjolano"]];
-}
-
 - (void)generate_map:(id)sender {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Shadow" message:@"Processing packages..." preferredStyle:UIAlertControllerStyleAlert];
     [self presentViewController:alert animated:YES completion:^{
         NSArray *file_map = [Shadow generateFileMap];
+        NSArray *url_set = [Shadow generateSchemeArray];
 
-        NSMutableDictionary *prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:PREFS_PATH];
+        HBPreferences *prefs = [HBPreferences preferencesForIdentifier:BLACKLIST_PATH];
 
-        if(prefs) {
-            [prefs setValue:file_map forKey:@"file_map"];
-            [prefs writeToFile:PREFS_PATH atomically:YES];
-        }
+        [prefs setObject:file_map forKey:@"files"];
+        [prefs setObject:url_set forKey:@"schemes"];
         
         [alert dismissViewControllerAnimated:YES completion:nil];
     }];
 }
 
 - (void)respring:(id)sender {
-    NSTask *task = [[[NSTask alloc] init] autorelease];
-    [task setLaunchPath:@"/usr/bin/killall"];
-    [task setArguments:[NSArray arrayWithObjects:@"backboardd", nil]];
-    [task launch];
+    // Use sbreload if available.
+    if([[NSFileManager defaultManager] fileExistsAtPath:@"/usr/bin/sbreload"]) {
+        pid_t pid;
+        const char *args[] = {"sbreload", NULL, NULL, NULL};
+        posix_spawn(&pid, "/usr/bin/sbreload", NULL, NULL, (char *const *)args, NULL);
+    } else {
+        [HBRespringController respring];
+    }
+}
+
+- (void)reset:(id)sender {
+    HBPreferences *prefs = [HBPreferences preferencesForIdentifier:PREFS_TWEAK_ID];
+    HBPreferences *prefs_apps = [HBPreferences preferencesForIdentifier:APPS_PATH];
+    HBPreferences *prefs_blacklist = [HBPreferences preferencesForIdentifier:BLACKLIST_PATH];
+    HBPreferences *prefs_tweakcompat = [HBPreferences preferencesForIdentifier:TWEAKCOMPAT_PATH];
+    HBPreferences *prefs_lockdown = [HBPreferences preferencesForIdentifier:LOCKDOWN_PATH];
+    HBPreferences *prefs_dlfcn = [HBPreferences preferencesForIdentifier:DLFCN_PATH];
+
+    if(prefs) {
+        [prefs removeAllObjects];
+    }
+
+    if(prefs_apps) {
+        [prefs_apps removeAllObjects];
+    }
+
+    if(prefs_blacklist) {
+        [prefs_blacklist removeAllObjects];
+    }
+
+    if(prefs_tweakcompat) {
+        [prefs_tweakcompat removeAllObjects];
+    }
+    
+    if(prefs_lockdown) {
+        [prefs_lockdown removeAllObjects];
+    }
+
+    if(prefs_dlfcn) {
+        [prefs_dlfcn removeAllObjects];
+    }
+    
+    [self respring:sender];
 }
 @end
